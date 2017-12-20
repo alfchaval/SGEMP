@@ -1,0 +1,29 @@
+* {
+	text-align: center;
+}
+
+p, fieldset, legend {
+	text-align: left;
+}
+
+p, label, legend {
+	font-weight: bold;
+}
+
+input:hover {
+	background-color: red;
+}
+
+input:focus {
+	background-color: yellow;
+}
+
+body {
+
+	font: 12px Arial, Helvetica, sans-serif;
+	font-size: 13px;
+}
+
+h1, h3 {
+	font-family: Georgia, serif;
+}
