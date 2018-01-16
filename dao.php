@@ -10,6 +10,19 @@ define("COLUMN_USER_NAME", "name");
 define("COLUMN_USER_PASSWORD", "password");
 define("COLUMN_USER_EMAIL", "email");
 
+define("TABLE_DEPENDENCY","dependency");
+define("COLUMN_DEPENDENCY_ID", "id");
+define("COLUMN_DEPENDENCY_NAME", "name");
+define("COLUMN_DEPENDENCY_SHORTNAME", "shortname");
+define("COLUMN_DEPENDENCY_DESCRIPTION", "description");
+
+define("TABLE_SECTOR","sector");
+define("COLUMN_SECTOR_ID", "id");
+define("COLUMN_SECTOR_NAME", "name");
+define("COLUMN_SECTOR_SHORTNAME", "shortname");
+define("COLUMN_SECTOR_DESCRIPTION", "description");
+define("COLUMN_SECTOR_IDDEPENDENCY", "id_dependency");
+
 class Dao {
     
     protected $conn;
@@ -28,7 +41,7 @@ class Dao {
     }
 
     /**
-     * Destructor de la clase
+     * Destructor de la claseDATABASE
      */
     function __destruct() {
         if($this->isConnected()) {
@@ -64,8 +77,32 @@ class Dao {
             return $this->conn->query($sql);
         }
         catch(PDOException $e) {
-            
+            $this->error="Error al consultar la tabla ".$table;
         }
+    }
+
+    function getDependency(){
+        try{
+            $sql= "SELECT * FROM ".TABLE_DEPENDENCY;
+            return $this->conn->query($sql);
+        } catch(PDOException $e) {
+            $this->error="Error al consultar la tabla ".TABLE_DEPENDENCY;
+        }
+    }
+
+
+    //function execute
+
+    /**
+     * Función que devuelve todos los sectores de la base de datos
+     */
+    function getSectors($idDependency) {
+        $sql = "SELECT * FROM ".TABLE_SECTOR." WHERE ".COLUMN_SECTOR_IDDEPENDENCY." = :idDependency";
+        $statement = $this->conn->prepare($sql);
+        $statement->bindParam(':idDependency', $idDependency);
+        //return $statement->execute(array(':idDependency'=>$idDependency));
+        $statement->execute();
+        return $statement;
     }
 }
 ?>

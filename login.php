@@ -1,7 +1,9 @@
 <?php
     include_once "app.php";
     session_start();
-    App::show_head("Inicio de sesión");
+    $app = new App();
+    $app->show_head("Inicio de sesión");
+    $app->show_menu();
 ?>
 
 <div class="container">
@@ -53,5 +55,5 @@
             }
         }
     }
-    App::show_footer();
+    $app->show_footer();
 ?>

@@ -27,6 +27,19 @@ class App {
             ';
     }
 
+    static function show_menu() {
+        print '
+        <ul class="sidebar-nav">
+            <li><a href="">Información</a></li>';
+        if(isset($_SESSION['user'])) {
+            print '<li><a href="inventory.php">Dependencies</a></li>
+                <li><a href="sector.php">Sectors</a></li>
+                <li><a href="logout.php">Logout</a></li>';
+        }
+        print
+        '</ul>';
+    }
+
     static function show_footer() {
         print '
             </body>
@@ -80,6 +93,10 @@ class App {
         }
         session_destroy();
         $this->showLogin();
+    }
+
+    function getDependency(){
+        return $this->dao->getDependency();
     }
 }
 
