@@ -30,8 +30,8 @@
 </div>
 <?php
     if($_SERVER['REQUEST_METHOD'] == 'POST'); {
-        $user = $_POST['user'];
-        $password = $_POST['password'];
+        if(isset($_POST['user'])) $user = $_POST['user'];
+        if(isset($_POST['password'])) $password = $_POST['password'];
         if(empty($user)) {
             echo '<p>Debe introducir un nombre de usuario </p>';
         }

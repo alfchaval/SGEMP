@@ -9,20 +9,59 @@
 
     $app->show_menu();
 
-    try {
-        $resultset = $app->getDependency();
-        $dependency = $resultset->fetchAll();
+    echo'<div class="col-11 col-md-7 offset-md-2">
+        <form action="inventory.php" method="post">
+            <input type="text" name="name" placeholder="Name" required="required">
+            <input type="text" name="shortname" placeholder="Shortname" required="required">
+            <input type="text" name="description" placeholder="Description" required="required">
+            <input type="submit" name="add" value="Add">
+        </form></div></br></br>';
 
-        if(count($dependency) > 0) {
-            echo'<div class="col-11 col-md-5 offset-md-3">
+    try {
+        if(isset($_POST['add'])) {
+            $app->getDao()->addDependency($_POST['name'], $_POST['shortname'], $_POST['description']);
+        }
+        else if(isset($_GET['delete'])) {
+            echo'<div class="col-11 col-md-7 offset-md-2">
+                <table>
+                    <tr>
+                        <td>
+                            Are you sure you want to delete dependency '.$_GET['delete'].'?
+                        </td>
+                        <td>
+                            <form action="inventory.php" method="post">
+                                <input type="hidden" name="id" value="'.$_GET['delete'].'">
+                                <input type="submit" name="confirmedDelete" value="Delete">
+                            </form>
+                        </td>
+                        <td>
+                            <form action="inventory.php" method="post">
+                                <input type="submit" name="cancel" value="Cancel">
+                            </form>
+                        </td>
+                    </tr>
+                </table>                
+            </div></br></br>';
+        }
+        else if(isset($_POST['confirmedDelete'])) {
+            $app->getDao()->deleteDependency($_POST['id']);
+        }
+        
+        $resultset = $app->getDependency();
+        $dependencies = $resultset->fetchAll();
+
+        if(count($dependencies) > 0) {
+            echo'<div class="col-11 col-md-7 offset-md-2">
             <table border="1">
+            <th></th>
             <th>ID</th>
             <th>Name</th>
             <th>Shortname</th>
             <th>Description</th>
-            <th>Sector</th>';
-            foreach($dependency as $fila) {
+            <th>Sectores</th>';
+            foreach($dependencies as $fila) {
                 echo'<tr>
+                    <td><a href="inventory.php?delete='.$fila['id'].'"><img src="http://icons.iconarchive.com/icons/awicons/vista-artistic/64/delete-icon.png" style="width:auto;"></a></td>
                     <td>'.$fila['id'].'</td>
                     <td>'.$fila['name'].'</td>
                     <td>'.$fila['shortname'].'</td>
@@ -34,13 +73,13 @@
             </div>';
         }
         else {
-            echo'No hay columnas que mostrar';
+            echo'<div class="col-11 col-md-7 offset-md-2">No hay columnas que mostrar</div>';
         }
     } catch (Exception $e) {
-        echo'Error ejecutando la sentencia';
+        echo'<div class="col-11 col-md-7 offset-md-2">Error ejecutando la sentencia</div>';
     }
 
-    //echo'<br>';
+  //echo'<br>';
     //print_r($dependency);
 
     $app->show_footer();

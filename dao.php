@@ -89,18 +89,119 @@ class Dao {
             $this->error="Error al consultar la tabla ".TABLE_DEPENDENCY;
         }
     }
-
-
     //function execute
 
     /**
      * Función que devuelve todos los sectores de la base de datos
      */
     function getSectors($idDependency) {
-        $sql = "SELECT * FROM ".TABLE_SECTOR." WHERE ".COLUMN_SECTOR_IDDEPENDENCY." = :idDependency";
+        if($idDependency == null) {
+            $sql = "SELECT * FROM ".TABLE_SECTOR." WHERE ".COLUMN_SECTOR_IDDEPENDENCY;
+        } else {
+            $sql = "SELECT * FROM ".TABLE_SECTOR." WHERE ".COLUMN_SECTOR_IDDEPENDENCY." = :idDependency";
+        }
         $statement = $this->conn->prepare($sql);
         $statement->bindParam(':idDependency', $idDependency);
         //return $statement->execute(array(':idDependency'=>$idDependency));
+        $statement->execute();
+        return $statement;
+    }
+
+    /**
+     * Función que da de alta dependencias.TABLE_DEPENDENCY
+     */
+
+     function addDependency($name, $shortname, $description) {
+        $sql = "INSERT INTO ".TABLE_DEPENDENCY." (
+            ".COLUMN_DEPENDENCY_NAME.", 
+            ".COLUMN_DEPENDENCY_SHORTNAME.", 
+            ".COLUMN_DEPENDENCY_DESCRIPTION.") 
+            VALUES ('".$name."', '".$shortname."', '".$description."')";
+        $statement = $this->conn->prepare($sql);
+        $statement->execute();
+        return $statement;
+     }
+
+     /**
+     * Función que elimina dependencias
+     */
+
+    function deleteDependency($id) {
+
+        /**
+         * HAY QUE ELIMINAR TODOS LOS SECTORES ASOCIADOS
+         * ░░░░░░░░░░░░▄▄▄█▀▀▀▀▀▀▀▀█▄▄▄░░░░░░░░░░░░
+         * ░░░░░░░░▄▄█▀▀░░░░░░░░░░░░░░▀▀█▄▄░░░░░░░░
+         * ░░░░░░▄█▀░░░░▄▄▄▄▄▄▄░░░░░░░░░░░▀█▄░░░░░░
+         * ░░░░▄█▀░░░▄██▄▄▄▄▄▄▄██▄░░░░▄█▀▀▀▀██▄░░░░
+         * ░░░█▀░░░░█▀▀▀░░▄██░░▄▄█░░░██▀▀▀███▄██░░░
+         * ░░█░░░░░░▀█▀▀▀▀▀▀▀▀▀██▀░░░▀█▀▀▀▀███▄▄█░░
+         * ░█░░░░░░░░░▀▀█▄▄██▀▀░░░░░░░░▀▄▄▄░░░▄▄▀█░
+         * █▀░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▀▀▀▀▀░░▀█
+         * █░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄░░░░█
+         * █░░░░░░░░░░░░░░░░░░░░░░░░▄▄▄▄▄██░░▀█░░░█
+         * █░░░░░░░░░░░░░░█░░░▄▄▄█▀▀▀░░░▄█▀░░░░░░░█
+         * █░░░░░░░░░░░░░░░░░░▀░░░░░░░░█▀░░░░░░░░░█
+         * █▄░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄█
+         * ░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█░
+         * ░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█░░
+         * ░░░█▄░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄█░░░
+         * ░░░░▀█▄░░░░░░░░░░░░░░░░░░░░░░░░░░▄█▀░░░░
+         * ░░░░░░▀█▄░░░░░░░░░░░░░░░░░░░░░░▄█▀░░░░░░
+         * */
+
+        $sql = "DELETE FROM ".TABLE_DEPENDENCY." WHERE ".COLUMN_DEPENDENCY_ID." = '".$id."'";
+        $statement = $this->conn->prepare($sql);
+        $statement->execute();
+        return $statement;
+    }
+
+    /**
+     * Función que da de alta sectores
+     */
+
+    function addSector($name, $shortname, $description, $idDependency) {
+
+        /**
+         * HAY QUE COMPROBAR QUE EXISTA LA DEPENDENCIA DE ID $idDependency
+         * ░░░░░░░░░░░░▄▄▄█▀▀▀▀▀▀▀▀█▄▄▄░░░░░░░░░░░░
+         * ░░░░░░░░▄▄█▀▀░░░░░░░░░░░░░░▀▀█▄▄░░░░░░░░
+         * ░░░░░░▄█▀░░░░▄▄▄▄▄▄▄░░░░░░░░░░░▀█▄░░░░░░
+         * ░░░░▄█▀░░░▄██▄▄▄▄▄▄▄██▄░░░░▄█▀▀▀▀██▄░░░░
+         * ░░░█▀░░░░█▀▀▀░░▄██░░▄▄█░░░██▀▀▀███▄██░░░
+         * ░░█░░░░░░▀█▀▀▀▀▀▀▀▀▀██▀░░░▀█▀▀▀▀███▄▄█░░
+         * ░█░░░░░░░░░▀▀█▄▄██▀▀░░░░░░░░▀▄▄▄░░░▄▄▀█░
+         * █▀░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▀▀▀▀▀░░▀█
+         * █░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄░░░░█
+         * █░░░░░░░░░░░░░░░░░░░░░░░░▄▄▄▄▄██░░▀█░░░█
+         * █░░░░░░░░░░░░░░█░░░▄▄▄█▀▀▀░░░▄█▀░░░░░░░█
+         * █░░░░░░░░░░░░░░░░░░▀░░░░░░░░█▀░░░░░░░░░█
+         * █▄░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄█
+         * ░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█░
+         * ░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█░░
+         * ░░░█▄░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄█░░░
+         * ░░░░▀█▄░░░░░░░░░░░░░░░░░░░░░░░░░░▄█▀░░░░
+         * ░░░░░░▀█▄░░░░░░░░░░░░░░░░░░░░░░▄█▀░░░░░░
+         * */
+
+        $sql = "INSERT INTO ".TABLE_SECTOR." (
+            ".COLUMN_SECTOR_NAME.", 
+            ".COLUMN_SECTOR_SHORTNAME.", 
+            ".COLUMN_SECTOR_DESCRIPTION.", 
+            ".COLUMN_SECTOR_IDDEPENDENCY.") 
+            VALUES ('".$name."', '".$shortname."', '".$description."', '".$idDependency."')";
+        $statement = $this->conn->prepare($sql);
+        $statement->execute();
+        return $statement;
+    }
+
+    /**
+     * Función que elimina sectores
+     */
+
+    function deleteSector($id) {
+        $sql = "DELETE FROM ".TABLE_SECTOR." WHERE ".COLUMN_SECTOR_ID." = '".$id."'";
+        $statement = $this->conn->prepare($sql);
         $statement->execute();
         return $statement;
     }
