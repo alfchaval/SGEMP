@@ -3,13 +3,13 @@
     session_start();
     $app = new App();
     $app->show_head("Inicio de sesión");
+    echo'<div class="text-center"><h1>Dependencias</h1></div>';
     $app->show_menu();
 ?>
 
 <div class="container">
     <div class="row">
         <div class="col-12 col-md-4 offset-md-4">
-            <h1>Inicio Sesión</h1>
             <div class="row">
                 <form method="POST" action="<?= $_SERVER['PHP_SELF']; ?>">
                     <div class="form-group">

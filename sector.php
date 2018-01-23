@@ -6,11 +6,14 @@ $app->show_head("Listado Sectores");
 
 echo'<div class="text-center"><h1>Sectores</h1></div>';
 
+echo '<div class="row">
+        <div class="column">';
 $app->show_menu();
+echo '</div>
+        <div class="column">';
 
 try {
-    echo'<div class="col-11 col-md-7 offset-md-2">
-        <form action="';
+    echo'<form action="';
         if(!isset($_GET['idDependency'])) {
             echo 'sector.php';
         }
@@ -103,8 +106,7 @@ try {
                 <td>'.$fila['id_dependency'].'</td> 
             </tr>';
         }
-        echo'</table>
-        </div>';
+        echo'</table>';
     } else {
         echo '<div class="col-11 col-md-7 offset-md-2">No hay sectores en la dependencia</div>';
     }

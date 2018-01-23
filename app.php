@@ -16,7 +16,7 @@ class App {
         <html lang="es">
             <head>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-                <link rel="stylesheet" type="text/css" href="style.css" />
+                <link rel="stylesheet" type="text/css" href="css/alfchaval.css" />
                 <title>'.$titulo.'</title>
                 <meta charset="utf-8"/>
             </head>
@@ -29,15 +29,26 @@ class App {
 
     static function show_menu() {
         print '
-        <ul class="sidebar-nav">
-            <li><a href="">Información</a></li>';
+        <nav class="navigation">
+            <ul class="mainmenu">
+                <li><a href="informacion.php">Información</a></li>';
         if(isset($_SESSION['user'])) {
-            print '<li><a href="inventory.php">Dependencies</a></li>
-                <li><a href="sector.php">Sectors</a></li>
+            print '<li class="has-sub"><a href="inventory.php">Dependencies</a></li>
+                    <ul class="mainmenu">
+                        <li><a href="listdependencies.php">List of dependencies</a></li>
+                        <li><a href="adddependency.php">Add new dependency</a></li>
+                    </ul>
+                    <li class="has-sub"><a href="#">Sectors</a></li>
+                    <ul class="mainmenu">
+                        <li><a href="listsectors.php">List of sectors</a></li>
+                        <li><a href="addsector.php">Add new sector</a></li>
+                    </ul>
                 <li><a href="logout.php">Logout</a></li>';
+        } else {
+            print '<li><a href="login.php">Login</a></li>';
         }
-        print
-        '</ul>';
+        print '</ul>
+        </nav>';
     }
 
     static function show_footer() {

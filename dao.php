@@ -128,28 +128,7 @@ class Dao {
 
     function deleteDependency($id) {
 
-        /**
-         * HAY QUE ELIMINAR TODOS LOS SECTORES ASOCIADOS
-         * ░░░░░░░░░░░░▄▄▄█▀▀▀▀▀▀▀▀█▄▄▄░░░░░░░░░░░░
-         * ░░░░░░░░▄▄█▀▀░░░░░░░░░░░░░░▀▀█▄▄░░░░░░░░
-         * ░░░░░░▄█▀░░░░▄▄▄▄▄▄▄░░░░░░░░░░░▀█▄░░░░░░
-         * ░░░░▄█▀░░░▄██▄▄▄▄▄▄▄██▄░░░░▄█▀▀▀▀██▄░░░░
-         * ░░░█▀░░░░█▀▀▀░░▄██░░▄▄█░░░██▀▀▀███▄██░░░
-         * ░░█░░░░░░▀█▀▀▀▀▀▀▀▀▀██▀░░░▀█▀▀▀▀███▄▄█░░
-         * ░█░░░░░░░░░▀▀█▄▄██▀▀░░░░░░░░▀▄▄▄░░░▄▄▀█░
-         * █▀░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▀▀▀▀▀░░▀█
-         * █░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄░░░░█
-         * █░░░░░░░░░░░░░░░░░░░░░░░░▄▄▄▄▄██░░▀█░░░█
-         * █░░░░░░░░░░░░░░█░░░▄▄▄█▀▀▀░░░▄█▀░░░░░░░█
-         * █░░░░░░░░░░░░░░░░░░▀░░░░░░░░█▀░░░░░░░░░█
-         * █▄░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄█
-         * ░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█░
-         * ░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█░░
-         * ░░░█▄░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄█░░░
-         * ░░░░▀█▄░░░░░░░░░░░░░░░░░░░░░░░░░░▄█▀░░░░
-         * ░░░░░░▀█▄░░░░░░░░░░░░░░░░░░░░░░▄█▀░░░░░░
-         * */
-
+        //Y luego eliminamos la dependencia
         $sql = "DELETE FROM ".TABLE_DEPENDENCY." WHERE ".COLUMN_DEPENDENCY_ID." = '".$id."'";
         $statement = $this->conn->prepare($sql);
         $statement->execute();
@@ -158,41 +137,25 @@ class Dao {
 
     /**
      * Función que da de alta sectores
+     * Compruebo que exista una dependencia con la id antes de añadir un sector con esa
+     * foreign key, aunque de la forma que lo tengo hecho no necesito la comprobación
      */
 
     function addSector($name, $shortname, $description, $idDependency) {
-
-        /**
-         * HAY QUE COMPROBAR QUE EXISTA LA DEPENDENCIA DE ID $idDependency
-         * ░░░░░░░░░░░░▄▄▄█▀▀▀▀▀▀▀▀█▄▄▄░░░░░░░░░░░░
-         * ░░░░░░░░▄▄█▀▀░░░░░░░░░░░░░░▀▀█▄▄░░░░░░░░
-         * ░░░░░░▄█▀░░░░▄▄▄▄▄▄▄░░░░░░░░░░░▀█▄░░░░░░
-         * ░░░░▄█▀░░░▄██▄▄▄▄▄▄▄██▄░░░░▄█▀▀▀▀██▄░░░░
-         * ░░░█▀░░░░█▀▀▀░░▄██░░▄▄█░░░██▀▀▀███▄██░░░
-         * ░░█░░░░░░▀█▀▀▀▀▀▀▀▀▀██▀░░░▀█▀▀▀▀███▄▄█░░
-         * ░█░░░░░░░░░▀▀█▄▄██▀▀░░░░░░░░▀▄▄▄░░░▄▄▀█░
-         * █▀░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▀▀▀▀▀░░▀█
-         * █░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄░░░░█
-         * █░░░░░░░░░░░░░░░░░░░░░░░░▄▄▄▄▄██░░▀█░░░█
-         * █░░░░░░░░░░░░░░█░░░▄▄▄█▀▀▀░░░▄█▀░░░░░░░█
-         * █░░░░░░░░░░░░░░░░░░▀░░░░░░░░█▀░░░░░░░░░█
-         * █▄░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄█
-         * ░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█░
-         * ░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█░░
-         * ░░░█▄░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄█░░░
-         * ░░░░▀█▄░░░░░░░░░░░░░░░░░░░░░░░░░░▄█▀░░░░
-         * ░░░░░░▀█▄░░░░░░░░░░░░░░░░░░░░░░▄█▀░░░░░░
-         * */
-
-        $sql = "INSERT INTO ".TABLE_SECTOR." (
-            ".COLUMN_SECTOR_NAME.", 
-            ".COLUMN_SECTOR_SHORTNAME.", 
-            ".COLUMN_SECTOR_DESCRIPTION.", 
-            ".COLUMN_SECTOR_IDDEPENDENCY.") 
-            VALUES ('".$name."', '".$shortname."', '".$description."', '".$idDependency."')";
-        $statement = $this->conn->prepare($sql);
-        $statement->execute();
-        return $statement;
+        $dependencias = $this->getDependency()->FetchAll();
+        for($index = 0; $dependencias[$index]['id'] <= $idDependency; $index++) {
+            if($dependencias[$index]['id'] == $idDependency) {
+                $sql = "INSERT INTO ".TABLE_SECTOR." (
+                    ".COLUMN_SECTOR_NAME.", 
+                    ".COLUMN_SECTOR_SHORTNAME.", 
+                    ".COLUMN_SECTOR_DESCRIPTION.", 
+                    ".COLUMN_SECTOR_IDDEPENDENCY.") 
+                    VALUES ('".$name."', '".$shortname."', '".$description."', '".$idDependency."')";
+                $statement = $this->conn->prepare($sql);
+                $statement->execute();
+                return $statement;
+            }
+        }        
     }
 
     /**
