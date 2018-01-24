@@ -29,26 +29,22 @@ class App {
 
     static function show_menu() {
         print '
-        <nav class="navigation">
-            <ul class="mainmenu">
-                <li><a href="informacion.php">Información</a></li>';
+            <div class="menu">
+            <ul>
+                <li class="menu-item"><a href="informacion.php">Información</a></li>';
         if(isset($_SESSION['user'])) {
-            print '<li class="has-sub"><a href="inventory.php">Dependencies</a></li>
-                    <ul class="mainmenu">
-                        <li><a href="listdependencies.php">List of dependencies</a></li>
-                        <li><a href="adddependency.php">Add new dependency</a></li>
-                    </ul>
-                    <li class="has-sub"><a href="#">Sectors</a></li>
-                    <ul class="mainmenu">
-                        <li><a href="listsectors.php">List of sectors</a></li>
-                        <li><a href="addsector.php">Add new sector</a></li>
-                    </ul>
-                <li><a href="logout.php">Logout</a></li>';
+            print '<li class="menu-section">Dependencies</li>
+                    <li class="menu-subitem"><a href="listdependencies.php">List of dependencies</a></li>
+                    <li class="menu-subitem"><a href="adddependency.php">Add new dependency</a></li>
+                    <li class="menu-section">Sectors</li>
+                    <li class="menu-subitem"><a href="listsectors.php">List of sectors</a></li>
+                    <li class="menu-subitem"><a href="addsector.php">Add new sector</a></li>
+                <li class="menu-item"><a href="logout.php">Logout</a></li>';
         } else {
-            print '<li><a href="login.php">Login</a></li>';
+            print '<li class="menu-item"><a href="login.php">Login</a></li>';
         }
         print '</ul>
-        </nav>';
+            </div>';
     }
 
     static function show_footer() {

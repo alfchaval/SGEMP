@@ -127,7 +127,6 @@ class Dao {
      */
 
     function deleteDependency($id) {
-
         //Y luego eliminamos la dependencia
         $sql = "DELETE FROM ".TABLE_DEPENDENCY." WHERE ".COLUMN_DEPENDENCY_ID." = '".$id."'";
         $statement = $this->conn->prepare($sql);

@@ -3,32 +3,33 @@
     session_start();
     $app = new App();
     $app->show_head("Inicio de sesión");
-    echo'<div class="text-center"><h1>Dependencias</h1></div>';
+
+    echo '<div class="title"><h1>Dependencias</h1></div>';
+
     $app->show_menu();
+
+    echo '<div class="contenido">';
 ?>
 
-<div class="container">
-    <div class="row">
-        <div class="col-12 col-md-4 offset-md-4">
-            <div class="row">
-                <form method="POST" action="<?= $_SERVER['PHP_SELF']; ?>">
-                    <div class="form-group">
-                        <label for="inputUser">Usuario</label>
-                        <input type="text" name="user" id="inputUser" value="" class="form-control" autofocus="autofocus"></input>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputPassword">Contraseña</label>
-                        <input type="password" name="password" id="inputPassword" value="" class="form-control"></input>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Inicia sesión</button>
-                    </div>
-                </form>
-            </div>
+<div class="login">
+     <form method="POST" action="<?= $_SERVER['PHP_SELF']; ?>">
+        <div class="form-group">
+            <label for="inputUser">Usuario</label>
+            <input type="text" name="user" id="inputUser" value="" class="form-control" autofocus="autofocus"></input>
         </div>
-    </div>
+        <div class="form-group">
+            <label for="inputPassword">Contraseña</label>
+            <input type="password" name="password" id="inputPassword" value="" class="form-control"></input>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Inicia sesión</button>
+        </div>
+    </form>
+    
 </div>
+
 <?php
+    echo '</br></br>';
     if($_SERVER['REQUEST_METHOD'] == 'POST'); {
         if(isset($_POST['user'])) $user = $_POST['user'];
         if(isset($_POST['password'])) $password = $_POST['password'];
@@ -48,12 +49,15 @@
                 //Guardar la sesión de usuario
                 $app->init_session($user);
                 //Redireccionamos a otra página
-                echo '<script language="javascript">window.location.href="inventory.php"</script>';
+                echo '<script language="javascript">window.location.href="listdependencies.php"</script>';
             }
             else {
                 echo '<p>usuario incorrecto</p>';
             }
         }
     }
+
+    echo '</div>';
+
     $app->show_footer();
 ?>
